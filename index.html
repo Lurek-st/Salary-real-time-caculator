@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实时收入计算器</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 添加窗口拖动样式 */
+    .drag-handle {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      -webkit-app-region: drag;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    /* 添加关闭按钮 */
+    .close-btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary-gold);
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--darker-bg);
+      -webkit-app-region: no-drag;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="drag-handle"></div>
+  <div class="close-btn" onclick="window.close()">×</div>
+  <div class="container">
+    <div id="welcome-screen">
+      <h1>Hello, <span id="username">打工人</span></h1>
+      <div class="name-input">
+        <input type="text" id="name-input" placeholder="输入你的名字">
+        <button onclick="updateName()">确定</button>
+      </div>
+      <h2>计算你今天的实时收入吧</h2>
+      <div class="choice-container">
+        <div class="choice" onclick="showSection('monthly')">
+          <h3>我是月薪打工人</h3>
+        </div>
+        <div class="choice" onclick="showSection('hourly')">
+          <h3>我是实习打工仔</h3>
+        </div>
+      </div>
+    </div>
+
+    <div id="monthly-section" class="input-section hidden">
+      <div class="input-group">
+        <label>你的税后月薪</label>
+        <div class="input-with-symbol">
+          <span class="currency-symbol">¥</span>
+          <input type="number" id="monthly-salary" placeholder="输入月薪">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>每月工作天数</label>
+        <input type="number" id="working-days" placeholder="输入工作天数">
+      </div>
+      <div class="input-group">
+        <label>每天工作小时数</label>
+        <input type="number" id="working-hours" placeholder="输入工作小时">
+      </div>
+      <button class="calculate-btn" onclick="startCalculation('monthly')">开始计算！</button>
+      <button class="back-btn" onclick="goBack()">返回</button>
+    </div>
+
+    <div id="hourly-section" class="input-section hidden">
+      <div class="input-group">
+        <label>你的实习时薪</label>
+        <div class="input-with-symbol">
+          <span class="currency-symbol">¥</span>
+          <input type="number" id="hourly-rate" placeholder="输入时薪">
+        </div>
+      </div>
+      <button class="calculate-btn" onclick="startCalculation('hourly')">开始计算！</button>
+      <button class="back-btn" onclick="goBack()">返回</button>
+    </div>
+
+    <div id="result-section" class="hidden">
+      <h2><span id="result-username">打工人</span>，你今天已经赚到了</h2>
+      <div class="earnings-display">
+        <span class="currency-symbol">¥</span>
+        <div id="earnings-counter">0.00</div>
+      </div>
+
+      <div class="stats-container">
+        <div class="stat-block">
+          <h3>工作时间</h3>
+          <div id="time-counter">00:00:00</div>
+        </div>
+        <div class="stat-block">
+          <h3>收入速率</h3>
+          <div class="rate-info">
+            <p>每小时：¥<span id="hourly-earning">0.00</span></p>
+            <p>每分钟：¥<span id="minute-earning">0.00</span></p>
+            <p>每秒钟：¥<span id="second-earning">0.00</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-buttons">
+        <button id="pause-btn" onclick="togglePause()">暂停</button>
+        <button id="reset-btn" onclick="resetCalculation()">重置</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="money-rain"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>
